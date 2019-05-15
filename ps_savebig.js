@@ -1,12 +1,12 @@
 <javascriptresource>
-<name>$$$/JavaScripts/export_web/Menu=Export for web</name>
+<name>$$$/JavaScripts/export_orig/Menu=Export orig size</name>
 <category>Scripts</category>
 </javascriptresource>
 // enable double clicking from the Macintosh Finder or the Windows Explorer
 #target photoshop
 
 //// Internal Options - To be modified for other configurations ////
-var suffix = "web"; //// could be "big"
+var suffix = "big"; //// could be "big"
 var jpegQuality = 12; // quality of the exported jpeg
 var webResizeLongSide = 1200; // longest side for resize for web
 var webResizeUnitValue = "px"; // Unit value for web resize
