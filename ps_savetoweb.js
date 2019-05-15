@@ -1,18 +1,19 @@
-
+<javascriptresource>
+<name>$$$/JavaScripts/Emmanuel Steinitz/Menu=Export for web</name>
+<category>Scripts</category>
+</javascriptresource>
 // enable double clicking from the Macintosh Finder or the Windows Explorer
-
 #target photoshop
 
-
-var jpegIndex = 1;
-var compJPEGIndex = 3;
-
-var suffix = "web";
+//// Internal Options - To be modified for other configurations ////
+var suffix = "web"; //// could be "big"
+var jpegQuality = 12; // quality of the exported jpeg
+var webResizeLongSide = 1200; // longest side for resize for web
+var webResizeUnitValue = "px"; // Unit value for web resize
+var signature = "Emmanuel Steinitz"; // name of the layer for watermark/signature
 
 // ok and cancel button
-
 var okButtonID = 1;
-
 var cancelButtonID = 2;
 
 settingDialog();
@@ -52,26 +53,23 @@ function saveFlavour(flavour){
 	var savedHistoryState = doc.activeHistoryState;
 	
 	// Turn On Signature on Web export
-	var signature = "Emmanuel Steinitz";
 	var wasSignatureVisible = false;
 	var signatureLayer = null;
 	if (suffix === "web"){
 	
 		// Resize Image
 		if(doc.height > doc.width){
-      		doc.resizeImage(undefined, UnitValue(1200, "px"), 300, ResampleMethod.BICUBIC);
+      		doc.resizeImage(undefined, UnitValue(webResizeLongSide, webResizeUnitValue), 300, ResampleMethod.BICUBIC);
 			//doc.resizeCanvas(new UnitValue(2400,'px'),new UnitValue(3000,'px'), AnchorPosition.MIDDLECENTER);
 		}else{
-			doc.resizeImage(UnitValue(1200, "px"), undefined, 300, ResampleMethod.BICUBIC);
+			doc.resizeImage(UnitValue(webResizeLongSide, webResizeUnitValue), undefined, 300, ResampleMethod.BICUBIC);
       		//doc.resizeCanvas(new UnitValue(3000,'px'),new UnitValue(2400,'px'), AnchorPosition.MIDDLECENTER);
      	}
-     	
-     	
      	
 		var layers = app.activeDocument.layers;
 		var len = layers.length;
 		var match = false;
-		// iterate through layers to find a match
+		// iterate through layers to find a match for watermark
 		if (len >1)
 		for (var i = 0; i < len; i++) {
 			// test for matching layer
@@ -82,20 +80,11 @@ function saveFlavour(flavour){
 				match = true;
 				break;
 			}
-		// handle groups (layer sets)
-		//else if (layer.typename == 'LayerSet') {
-		//	match = findLayer(layer, name);
-		//	if (match) {
-		//		break;
-		//	}
-		//}
 		}
 		if (match){
 			wasSignatureVisible = signatureLayer.visible 
 			signatureLayer.visible = true
 		}
-		
-		
 		
 	}
 
@@ -105,7 +94,7 @@ function saveFlavour(flavour){
 	jpgSaveOptions.embedColorProfile = true
 	jpgSaveOptions.formatOptions = FormatOptions.STANDARDBASELINE
 	jpgSaveOptions.matte = MatteType.NONE
-	jpgSaveOptions.quality = 12
+	jpgSaveOptions.quality = jpegQuality
 	doc.saveAs(jpgFile, jpgSaveOptions, true,Extension.LOWERCASE)
 
 	if (signatureLayer!= null){
